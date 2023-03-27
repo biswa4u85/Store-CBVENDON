@@ -39,17 +39,25 @@ import dayjs from "dayjs";
 import { OrderStatus, OrderActions } from "components";
 import { IOrder, IStore, IOrderFilterVariables } from "interfaces";
 import { useMemo } from "react";
+export const USERS_DETAILS = "user details";
 
 export const OrderList: React.FC<IResourceComponentsProps> = () => {
+    let user = localStorage.getItem(USERS_DETAILS);
+    let users: any = user ? JSON.parse(user) : {}
     const { tableProps, sorter, searchFormProps, filters } = useTable<
         IOrder,
         HttpError,
         IOrderFilterVariables
     >({
         resource: 'orders',
+        initialFilter: [{
+            field: "store",
+            operator: "eq",
+            value: users?.id,
+        }],
         onSearch: (params) => {
             const filters: any = [];
-            const { orderStatus, isPaid, status, store, user } = params;
+            const { orderStatus, isPaid, status } = params;
             filters.push({
                 field: "orderStatus",
                 operator: "eq",
@@ -65,19 +73,6 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                 operator: "boolean",
                 value: isPaid,
             });
-
-            filters.push({
-                field: "store",
-                operator: "eq",
-                value: store,
-            });
-
-            filters.push({
-                field: "user",
-                operator: "eq",
-                value: user,
-            });
-
             return filters;
         },
     });
@@ -323,30 +318,6 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                         >
 
                         </Select>
-                    </Form.Item>
-                </Col>
-                <Col xl={24} md={8} sm={12} xs={24}>
-                    <Form.Item
-                        label={t("orders.filter.store.label")}
-                        name="store"
-                    >
-                        <Select
-                            {...storeSelectProps}
-                            allowClear
-                            placeholder={t("orders.filter.store.placeholder")}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col xl={24} md={8} sm={12} xs={24}>
-                    <Form.Item
-                        label={t("orders.filter.user.label")}
-                        name="user"
-                    >
-                        <Select
-                            {...userSelectProps}
-                            allowClear
-                            placeholder={t("orders.filter.user.placeholder")}
-                        />
                     </Form.Item>
                 </Col>
                 <Col xl={24} md={8} sm={12} xs={24}>

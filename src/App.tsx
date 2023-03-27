@@ -15,7 +15,7 @@ import "dayjs/locale/de";
 
 import { OrderList, OrderCreate, OrderEdit, OrderShow } from "./pages/orders";
 import { AuthPage } from "./pages/auth";
-import { StoreCreate, StoreEdit, StoreList } from "./pages/stores";
+import { StoreEdit } from "./pages/stores";
 import { useTranslation } from "react-i18next";
 import { Header, Title } from "components";
 
@@ -92,9 +92,7 @@ const App: React.FC = () => {
                     },
                     {
                         name: "stores",
-                        list: StoreList,
                         edit: StoreEdit,
-                        create: StoreCreate,
                         icon: <Icons.ShopOutlined />,
                     },
                 ]}

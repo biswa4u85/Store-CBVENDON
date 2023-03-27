@@ -78,7 +78,7 @@ export const FormList = ({ formProps, type }: any) => {
                     },
                 ]}
             >
-                <Input />
+                <Input readOnly />
             </Form.Item>
             {type === "create" && (
                 <Form.Item

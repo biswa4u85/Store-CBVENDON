@@ -12,7 +12,7 @@ export const authProvider: AuthProvider = {
     login: async ({ email, password }) => {
         try {
             let user: any = await signInWithEmailAndPassword(auth, email, password)
-            const q = query(collection(db, "admins"), where("uid", "==", user.user.uid));
+            const q = query(collection(db, "stores"), where("uid", "==", user.user.uid));
             const querySnapshot: any = await getDocs(q);
             if (querySnapshot?.docs?.length == 0) {
                 throw new Error("Invalid login credentials");
@@ -35,12 +35,12 @@ export const authProvider: AuthProvider = {
         try {
             try {
                 let user: any = await createUserWithEmailAndPassword(auth, email, password)
-                const dbRef = collection(db, 'admins');
-                addDoc(dbRef, { email, uid: user.user.uid, id: user.user.uid, type: 'admin', isActive: false })
+                const dbRef = collection(db, 'stores');
+                addDoc(dbRef, { email, uid: user.user.uid, id: user.user.uid, type: 'vendor', isActive: false, title: email })
                     .then(docRef => {
                         notification.success({
                             message: "Resistor",
-                            description: "Admin resistor successfully",
+                            description: "Store resistor successfully",
                         });
                         history.back()
                         return Promise.resolve();
@@ -95,7 +95,7 @@ export const authProvider: AuthProvider = {
             return Promise.reject();
         }
         let users = JSON.parse(user)
-        const q = query(collection(db, "admins"), where("uid", "==", users.uid));
+        const q = query(collection(db, "stores"), where("uid", "==", users.uid));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             let userData: any = { ...doc.data(), id: doc.id }
