@@ -29,11 +29,11 @@ export const FormList = ({ formProps, type }: any) => {
     const { options, onSearch } = useSelect<IProduct>({
         resource: "products",
         onSearch: (value) => [
-            {
-                field: "store.id",
-                operator: "eq",
-                value,
-            }
+            // {
+            //     field: "store.id",
+            //     operator: "eq",
+            //     value,
+            // }
         ]
     });
 
@@ -72,7 +72,7 @@ export const FormList = ({ formProps, type }: any) => {
                     },
                 ]}
             >
-                <Select>
+                <Select disabled>
                     {stores?.options?.map((option: any) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -80,7 +80,8 @@ export const FormList = ({ formProps, type }: any) => {
                     ))}
                 </Select>
             </Form.Item>
-            {formProps.form.getFieldsValue().store && (<Form.Item
+            {/* {formProps.form.getFieldsValue().store && (<Form.Item */}
+            <Form.Item
                 label={'Products'}
                 name={"products"}
                 rules={[
@@ -99,7 +100,7 @@ export const FormList = ({ formProps, type }: any) => {
                         </option>
                     ))}
                 </Select>
-            </Form.Item>)}
+            </Form.Item>
             <Form.Item
                 label={'Status'}
                 name="status"

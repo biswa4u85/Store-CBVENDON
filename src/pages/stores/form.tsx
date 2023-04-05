@@ -21,11 +21,11 @@ export const FormList = ({ formProps, type }: any) => {
     const { selectProps: productSelectProps } = useSelect<IProduct>({
         resource: "products",
         filters: [
-            {
-                field: "store.id",
-                operator: "eq",
-                value: formProps?.initialValues?.id,
-            },
+            // {
+            //     field: "store.id",
+            //     operator: "eq",
+            //     value: formProps?.initialValues?.id,
+            // },
         ],
     });
 
@@ -211,7 +211,8 @@ export const FormList = ({ formProps, type }: any) => {
                 <Files count={5} folder={'storeImages'} lable={'Store Image'} name="images" formProps={formProps} />
             </Form.Item>
         </Col>
-        {type === "edit" && (<Col xs={24} lg={12}>
+        {/* {type === "edit" && (<Col xs={24} lg={12}> */}
+        <Col xs={24} lg={12}>
             <Form.Item
                 label={'Best Seller Items'}
                 name={"bestSellerItems"}
@@ -239,7 +240,7 @@ export const FormList = ({ formProps, type }: any) => {
                     allowClear
                 />
             </Form.Item>
-        </Col>)}
+        </Col>
         <Col xs={24} lg={12}>
             <Form.Item
                 label={'Store Operational Hours'}
