@@ -7,9 +7,10 @@ import dayjs from "dayjs";
 type FilesProps = {
     name: any
     formProps: any
+    disabled?: any
 };
 
-export const Dates: React.FC<FilesProps> = ({ formProps, name }) => {
+export const Dates: React.FC<FilesProps> = ({ formProps, name, disabled }) => {
 
     const [d, setD] = useState<any>(null)
 
@@ -30,6 +31,6 @@ export const Dates: React.FC<FilesProps> = ({ formProps, name }) => {
     }
 
     return (
-        <DatePicker allowClear={false} value={d} onChange={onDateChange} />
+        <DatePicker disabled={disabled} allowClear={false} value={d} onChange={onDateChange} />
     );
 };

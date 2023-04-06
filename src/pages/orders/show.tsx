@@ -29,6 +29,12 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
     });
     const users = userDetails?.data?.data;
 
+    const storeDetails = useOne<any>({
+        resource: "stores",
+        id: order?.store,
+    });
+    const store = storeDetails?.data?.data;
+
     const exportData = () => {
         if (order?.user) {
             fetch('https://us-central1-cbuserapp.cloudfunctions.net/emailSend', {
@@ -83,13 +89,13 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                 <Descriptions.Item label="Logistic Confirmation Number">{order.logisticConfirmationNumber}</Descriptions.Item>
                 <Descriptions.Item label="Payment Confirmation">{order.paymentConfirmation}</Descriptions.Item>
                 <Descriptions.Item label="Service Price">{common.currency}{order.servicePrice}</Descriptions.Item>
-                <Descriptions.Item label="Status">{order.status ? 'Pending' : 'Completed'}</Descriptions.Item>
                 <Descriptions.Item label="QR Code">
                     <QRCodes text={JSON.stringify({
                         id: String(order.id),
                         itemQuantity: order?.products?.length ? Number(order?.products?.length) : null,
                         bagCount: order.bags ? Number(order.bags) : null,
                         storeID: String(order.store),
+                        storeName: String(store?.title),
                         price: order.servicePrice ? Number(order.servicePrice) : null,
                         isPaid: order.isPaid ? order.isPaid : false, // default to false.
                         paymentConfirmation: order.paymentConfirmation ? String(order.paymentConfirmation) : "", // can leave it empty

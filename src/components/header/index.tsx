@@ -8,26 +8,30 @@ import {
 } from "@pankod/refine-core";
 
 import {
-    Menu,
-    Icons,
+    Button,
+    Modal,
     Avatar,
     Typography,
     Space,
     Grid,
+    notification,
     Row,
     Col,
+    Form,
+    Input,
     AntdLayout,
 } from "@pankod/refine-antd";
 
 import RefineReactRouter from "@pankod/refine-react-router-v6";
 
-import { useTranslation } from "react-i18next";
+import { QuestionOutlined } from "@ant-design/icons";
 
 const USERS_DETAILS = "user details";
 const { Header: AntdHeader } = AntdLayout;
 const { Link } = RefineReactRouter;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
+const { TextArea } = Input;
 
 import { IOrder, IStore } from "interfaces";
 import { HeaderTitle } from "./styled";
@@ -49,6 +53,9 @@ export const Header: React.FC = () => {
     const t = useTranslate();
     const [users, setUsers] = useState<any>({})
     const user = localStorage.getItem(USERS_DETAILS);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const [form] = Form.useForm();
 
     useEffect(() => {
         if (user) {
@@ -56,6 +63,42 @@ export const Header: React.FC = () => {
             setUsers(users1)
         }
     }, [user]);
+
+
+    const help = (values: any) => {
+        setLoader(true)
+        fetch('https://us-central1-cbuserapp.cloudfunctions.net/emailSend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                "to": users?.email,
+                "subject": values.subject,
+                "text": ` `,
+                "html": values.message
+            })
+        })
+            .then((response) => response.text())
+            .then((data: any) => {
+                form.resetFields();
+                setIsModalOpen(false)
+                setLoader(false)
+                notification.success({
+                    message: "Success",
+                    description: data,
+                })
+            }
+            )
+            .catch((error) => {
+                setLoader(false)
+                notification.error({
+                    message: "Error",
+                    description: "Email Error",
+                })
+            });
+    };
 
     const renderTitle = (title: string) => (
         <HeaderTitle>
@@ -167,6 +210,11 @@ export const Header: React.FC = () => {
                         >
                             {users?.fullName}
                         </Text>
+                        <a onClick={() => setIsModalOpen(true)}>
+                            <QuestionOutlined
+                                style={{ fontSize: 20, color: '#ff0000' }}
+                            />
+                        </a>
                         <Link to={`/stores/edit/${users?.id}`}>
                             <Avatar
                                 size="large"
@@ -177,6 +225,51 @@ export const Header: React.FC = () => {
                     </Space>
                 </Col>
             </Row>
+            <Modal title="User Feedback" open={isModalOpen} footer={null} onCancel={() => setIsModalOpen(false)}>
+                <Form
+                    name="basic"
+                    form={form}
+                    layout="vertical"
+                    onFinish={help}
+                    autoComplete="off"
+                >
+                    <Form.Item
+                        label="Subject"
+                        name="subject"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your Subject!',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Message"
+                        name="message"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your Message!',
+                            },
+                        ]}
+                    >
+                        <TextArea />
+                    </Form.Item>
+                    <Form.Item
+                        wrapperCol={{
+                            offset: 8,
+                            span: 16,
+                        }}
+                    >
+                        <Button loading={loader} type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </AntdHeader>
     );
 };

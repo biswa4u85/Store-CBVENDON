@@ -16,6 +16,7 @@ export const dataProvider: any = {
             }
         }
         if (resource === 'orders') {
+            params.isPaid = false
             params.orderStatusArray = [{ children: params.orderStatus, label: String(new Date()) }]
         }
         params['createAt'] = String(new Date())
@@ -64,6 +65,7 @@ export const dataProvider: any = {
                 for (let item of filters) {
                     if (item.operator == 'boolean') {
                         queryConstraints.push(where(item.field, '==', (item.value == 'true' ? true : false)))
+                    } else if (item.operator == 'id' || item.operator == 'in') {
                     } else {
                         if (item.value && Array.isArray(item.value)) {
                             for (let val of item.value) {
@@ -79,17 +81,29 @@ export const dataProvider: any = {
                 for (let item of sort) {
                     queryConstraints.push(orderBy(item.field, item.order))
                 }
-            } 
+            }
             // else {
             //     queryConstraints.push(orderBy('updateAt', 'desc'))
             // }
             let q = query(collection(db, resource), ...queryConstraints)
             const querySnapshot = await getDocs(q);
-            const collections: any = [];
+            let collections: any = [];
             querySnapshot.forEach((doc: any) => {
                 collections.push({ ...doc.data(), id: doc.id })
             });
             collections.sort((a: any, b: any) => new Date(b.updateAt).getTime() - new Date(a.updateAt).getTime());
+            if (resource == 'orders') {
+                let filterId = filters.find((item: any) => item.operator == 'id')
+                if (filterId && filterId.value) {
+                    let collection = collections.filter((item: any) => item.id == filterId.value)
+                    collections = collection ? collection : []
+                }
+                let filterIn = filters.find((item: any) => item.operator == 'in')
+                if (filterIn && filterIn.value) {
+                    let collection = collections.filter((element: any) => filterIn.value.includes(element.orderStatus))
+                    collections = collection ? collection : []
+                }
+            }
             return Promise.resolve({ data: collections });
         } catch (error) {
             return Promise.reject(error);

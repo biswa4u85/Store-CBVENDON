@@ -57,16 +57,16 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
         }],
         onSearch: (params) => {
             const filters: any = [];
-            const { orderStatus, isPaid, status } = params;
+            const { orderStatus, isPaid, order } = params;
             filters.push({
                 field: "orderStatus",
-                operator: "eq",
-                value: orderStatus,
+                operator: "in",
+                value: orderStatus ? orderStatus == 'Not Delivered' ? ['Out for Delivery', 'Order Packaged', 'Order Received'] : [orderStatus] : '',
             });
             filters.push({
-                field: "status",
-                operator: "boolean",
-                value: status,
+                field: "id",
+                operator: "id",
+                value: order,
             });
             filters.push({
                 field: "isPaid",
@@ -241,6 +241,18 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
 ) => {
     const t = useTranslate();
     const { formProps, filters } = props;
+    let user = localStorage.getItem(USERS_DETAILS);
+    let users: any = user ? JSON.parse(user) : {}
+    const { selectProps: orderSelectProps } = useSelect<IStore>({
+        resource: "orders",
+        optionLabel: "id",
+        filters: [{
+            field: "store",
+            operator: "eq",
+            value: users?.id,
+        }],
+        defaultValue: getDefaultFilter("order.id", filters),
+    });
     const { selectProps: storeSelectProps } = useSelect<IStore>({
         resource: "stores",
         optionLabel: "id",
@@ -285,7 +297,7 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                         name="orderStatus"
                     >
                         <Select
-                            options={[{ label: 'Delivered', value: 'Delivered' }, { label: 'Out for Delivery', value: 'Out for Delivery' }, { label: 'Order Packaged', value: 'Order Packaged' }, { label: 'Order Received', value: 'Order Received' }]}
+                            options={[{ label: 'Delivered', value: 'Delivered' }, { label: 'Not Delivered', value: 'Not Delivered' }, { label: 'Out for Delivery', value: 'Out for Delivery' }, { label: 'Order Packaged', value: 'Order Packaged' }, { label: 'Order Received', value: 'Order Received' }]}
                             allowClear
                             placeholder={t("orders.filter.status.placeholder")}
                         >
@@ -308,16 +320,14 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                 </Col>
                 <Col xl={24} md={8} sm={12} xs={24}>
                     <Form.Item
-                        label={'Status'}
-                        name="status"
+                        label={'Order'}
+                        name="order"
                     >
                         <Select
-                            options={[{ label: 'Pending', value: 'true' }, { label: 'Completed', value: 'false' }]}
+                            {...orderSelectProps}
                             allowClear
-                            placeholder={'Status'}
-                        >
-
-                        </Select>
+                            placeholder={'Search Orders'}
+                        />
                     </Form.Item>
                 </Col>
                 <Col xl={24} md={8} sm={12} xs={24}>

@@ -28,7 +28,7 @@ export const authProvider: AuthProvider = {
             });
 
         } catch (error) {
-            throw new Error("Invalid login credentials");
+            throw new Error("Account Inactive");
         }
     },
     register: async ({ email, password }) => {
