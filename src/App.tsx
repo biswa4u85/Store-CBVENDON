@@ -15,6 +15,7 @@ import "dayjs/locale/de";
 
 import { OrderList, OrderCreate, OrderEdit, OrderShow } from "./pages/orders";
 import { AuthPage } from "./pages/auth";
+import { SignUp } from "./pages/auth/signUp";
 import { StoreEdit } from "./pages/stores";
 import { useTranslation } from "react-i18next";
 import { Header, Title } from "components";
@@ -38,14 +39,7 @@ const App: React.FC = () => {
                         {
                             path: "/register",
                             element: (
-                                <AuthPage
-                                    type="register"
-                                    formProps={{
-                                        initialValues: {
-
-                                        },
-                                    }}
-                                />
+                                <SignUp />
                             ),
                         },
                         {
@@ -67,7 +61,7 @@ const App: React.FC = () => {
                         rememberMe={false}
                         formProps={{
                             initialValues: {
-                                
+
                             },
                         }}
                     />

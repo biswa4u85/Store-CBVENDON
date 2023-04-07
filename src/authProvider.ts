@@ -31,12 +31,12 @@ export const authProvider: AuthProvider = {
             throw new Error("Account Inactive");
         }
     },
-    register: async ({ email, password }) => {
+    register: async (values) => {
         try {
             try {
-                let user: any = await createUserWithEmailAndPassword(auth, email, password)
+                let user: any = await createUserWithEmailAndPassword(auth, values.email, values.password)
                 const dbRef = collection(db, 'stores');
-                addDoc(dbRef, { email, uid: user.user.uid, id: user.user.uid, type: 'vendor', isActive: false, title: email })
+                addDoc(dbRef, { ...values, uid: user.user.uid, id: user.user.uid, type: 'vendor', isActive: false, createAt: String(new Date()), updateAt: String(new Date()) })
                     .then(docRef => {
                         notification.success({
                             message: "Resistor",

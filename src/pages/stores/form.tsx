@@ -9,29 +9,30 @@ import {
     Select,
     InputNumber,
     Button,
-    Col,
-    Radio,
-    TextField,
+    Col
 } from "@pankod/refine-antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Files, PImg, Address, VenderTimes } from 'components'
 import { IProduct } from "interfaces";
+import { useEffect, useState } from "react";
 const { Option } = Select;
 const { TextArea } = Input;
 
 export const FormList = ({ formProps, type }: any) => {
     const t = useTranslate();
-
+    const [data, setData] = useState([]);
     const { selectProps: productSelectProps } = useSelect<IProduct>({
-        resource: "categories",
-        filters: [
-            // {
-            //     field: "store.id",
-            //     operator: "eq",
-            //     value: formProps?.initialValues?.id,
-            // },
-        ],
+        resource: "categories"
     });
+
+    useEffect(() => {
+        fetch('https://restcountries.com/v3.1/all?fields=name,phone')
+            .then(response => response.json())
+            .then(data => setData(data))
+            .catch(error => console.log(error));
+    }, []);
+
+    // console.log(data)
 
     const prefixSelector = (
         <Form.Item name="phoneCode" noStyle>
@@ -98,7 +99,7 @@ export const FormList = ({ formProps, type }: any) => {
                     },
                 ]}
             >
-                <Input readOnly />
+                <Input disabled={type === "edit"} />
             </Form.Item>
             {type === "create" && (
                 <Form.Item

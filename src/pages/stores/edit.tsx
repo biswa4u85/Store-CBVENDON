@@ -19,7 +19,6 @@ export const StoreEdit: React.FC<IResourceComponentsProps> = () => {
                 {...formProps}
                 layout="vertical"
                 initialValues={{
-                    // isActive: true,
                     ...formProps.initialValues,
                 }}
             >

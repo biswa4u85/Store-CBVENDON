@@ -7,7 +7,6 @@ const authWrapperProps = {
 
 const renderAuthContent = (content: React.ReactNode) => {
     const { Link } = useRouterContext();
-
     return (
         <div
             style={{
