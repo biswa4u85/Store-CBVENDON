@@ -40,7 +40,7 @@ export const authProvider: AuthProvider = {
                     .then(docRef => {
                         notification.success({
                             message: "Resistor",
-                            description: "Store resistor successfully",
+                            description: "Store register successfully",
                         });
                         history.back()
                         return Promise.resolve();
