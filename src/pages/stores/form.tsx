@@ -32,8 +32,6 @@ export const FormList = ({ formProps, type }: any) => {
             .catch(error => console.log(error));
     }, []);
 
-    // console.log(data)
-
     const prefixSelector = (
         <Form.Item name="phoneCode" noStyle>
             <Select style={{ width: 80 }}>
@@ -253,18 +251,6 @@ export const FormList = ({ formProps, type }: any) => {
                                 >
                                     <Form.Item
                                         {...restField}
-                                        name={[name, 'image']}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: 'Missing Image',
-                                            },
-                                        ]}
-                                    >
-                                        <PImg folder={'products'} name={name} lable={'Product Image'} formProps={formProps} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        {...restField}
                                         name={[name, 'description']}
                                         rules={[
                                             {
@@ -274,6 +260,18 @@ export const FormList = ({ formProps, type }: any) => {
                                         ]}
                                     >
                                         <TextArea style={{ height: 150 }} placeholder="Description" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        {...restField}
+                                        name={[name, 'image']}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Missing Image',
+                                            },
+                                        ]}
+                                    >
+                                        <PImg folder={'products'} name={name} lable={'Product Image'} formProps={formProps} />
                                     </Form.Item>
                                     <MinusCircleOutlined onClick={() => remove(name)} />
                                 </Space>
