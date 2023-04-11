@@ -15,6 +15,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Files, PImg, Address, VenderTimes } from 'components'
 import { IProduct } from "interfaces";
 import { useEffect, useState } from "react";
+import code from "./code";
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -37,8 +38,7 @@ export const FormList = ({ formProps, type }: any) => {
     const prefixSelector = (
         <Form.Item name="phoneCode" noStyle>
             <Select style={{ width: 80 }}>
-                <Option value="+91">+91</Option>
-                <Option value="+01">+01</Option>
+                {code.map((item: any, key: any) => <Option key={key} value={item.dial_code}>{item.dial_code}</Option>)}
             </Select>
         </Form.Item>
     );
