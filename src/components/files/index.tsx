@@ -84,8 +84,6 @@ export const Files: React.FC<FilesProps> = ({ formProps, name, folder, count = 1
         }
     }
 
-    console.log(fileList)
-
     return (
         <>
             <Text

@@ -64,7 +64,6 @@ export const Header: React.FC = () => {
         }
     }, [user]);
 
-
     const help = (values: any) => {
         setLoader(true)
         fetch('https://us-central1-cbuserapp.cloudfunctions.net/emailSend', {
@@ -74,9 +73,9 @@ export const Header: React.FC = () => {
                 'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
-                "to": users?.email,
-                "subject": values.subject,
-                "text": ` `,
+                "to": "support@wecarrybags.co.uk",
+                "subject": `${values.subject}`,
+                "text": `From ${users?.email}`,
                 "html": values.message
             })
         })
@@ -215,13 +214,13 @@ export const Header: React.FC = () => {
                                 style={{ fontSize: 20, color: '#ff0000' }}
                             />
                         </a>
-                        <Link to={`/stores/edit/${users?.id}`}>
+                        {users?.id && (<Link to={`/stores/edit/${users?.id}`}>
                             <Avatar
                                 size="large"
                                 src={users?.avatar ? users?.avatar[0]?.url : ''}
                                 alt={users?.fullName}
                             />
-                        </Link>
+                        </Link>)}
                     </Space>
                 </Col>
             </Row>

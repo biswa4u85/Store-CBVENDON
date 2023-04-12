@@ -17,7 +17,8 @@ export const dataProvider: any = {
         }
         if (resource === 'orders') {
             params.isPaid = false
-            params.orderStatusArray = [{ children: params.orderStatus, label: String(new Date()) }]
+            params.orderStatusArray = []
+            params.user = params.user ? params.user : ''
         }
         params['createAt'] = String(new Date())
         params['updateAt'] = String(new Date())
@@ -60,7 +61,13 @@ export const dataProvider: any = {
         metaData,
     }: any) => {
         try {
+            const USERS_DETAILS = "user details";
+            let user = localStorage.getItem(USERS_DETAILS);
+            let users: any = user ? JSON.parse(user) : {}
             const queryConstraints = []
+            if (resource == 'orders') {
+                queryConstraints.push(where('store', '==', users?.id ? users?.id : ''))
+            }
             if (filters) {
                 for (let item of filters) {
                     if (item.operator == 'boolean') {

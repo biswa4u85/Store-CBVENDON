@@ -41,7 +41,7 @@ export const SignUp: React.FC<IResourceComponentsProps> = () => {
                 <Form
                     {...formProps}
                     layout="vertical"
-                    initialValues={{}}
+                    initialValues={{ phoneCode: "+44" }}
                     onFinish={(values) => {
                         createNew(values);
                     }}

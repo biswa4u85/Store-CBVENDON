@@ -181,7 +181,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                                 title={value}
                                 trigger="hover"
                             >
-                                <Link to={`/stores/edit/${value}`} type="link">Store ID</Link>
+                                <Button type="link">Store ID</Button>
                             </Popover>}
                         />
                         <Table.Column
@@ -192,7 +192,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                                 title={value}
                                 trigger="hover"
                             >
-                                <Link to={`/users/show/${value}`} type="link">User ID</Link>
+                                <Button type="link">User ID</Button>
                             </Popover>}
                         />
                         <Table.Column<IOrder>
@@ -300,6 +300,10 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                             options={[{ label: 'Delivered', value: 'Delivered' }, { label: 'Not Delivered', value: 'Not Delivered' }, { label: 'Out for Delivery', value: 'Out for Delivery' }, { label: 'Order Packaged', value: 'Order Packaged' }, { label: 'Order Received', value: 'Order Received' }]}
                             allowClear
                             placeholder={t("orders.filter.status.placeholder")}
+                            showSearch
+                            filterOption={(input, option) =>
+                                String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
                         >
                         </Select>
                     </Form.Item>
@@ -313,6 +317,10 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                             options={[{ label: 'Done', value: 'true' }, { label: 'Not Done', value: 'false' }]}
                             allowClear
                             placeholder={'Payment Status'}
+                            showSearch
+                            filterOption={(input, option) =>
+                                String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
                         >
 
                         </Select>
@@ -324,9 +332,14 @@ const Filter: React.FC<{ formProps: FormProps; filters: CrudFilters }> = (
                         name="order"
                     >
                         <Select
-                            {...orderSelectProps}
+                            // {...orderSelectProps}
+                            options={orderSelectProps.options}
                             allowClear
                             placeholder={'Search Orders'}
+                            showSearch
+                            filterOption={(input, option) =>
+                                String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
                         />
                     </Form.Item>
                 </Col>

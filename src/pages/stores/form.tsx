@@ -28,12 +28,6 @@ export const FormList = ({ formProps, type }: any) => {
         resource: "categories"
     });
 
-    useEffect(() => {
-        fetch('https://restcountries.com/v3.1/all?fields=name,phone')
-            .then(response => response.json())
-            .then(data => setData(data))
-            .catch(error => console.log(error));
-    }, []);
 
     const prefixSelector = (
         <Form.Item name="phoneCode" noStyle>
@@ -122,9 +116,13 @@ export const FormList = ({ formProps, type }: any) => {
                         required: true,
                         message: 'Management Phone is required!'
                     },
+                    {
+                        pattern: /^[0-9]{10}$/,
+                        message: "Please Enter Up to 10 digits",
+                    },
                 ]}
             >
-                <InputNumber style={{ width: 340 }} addonBefore={prefixSelector} type="number" />
+                <InputNumber step="0" style={{ width: 340 }} addonBefore={prefixSelector} type="number" />
             </Form.Item>
         </Col>
         <Col xs={24} lg={8}>
@@ -178,9 +176,17 @@ export const FormList = ({ formProps, type }: any) => {
                         required: true,
                         message: 'Store Representative Phone is required!'
                     },
+                    {
+                        pattern: /^[0-9]{10}$/,
+                        message: "Please Enter Up to 10 digits",
+                    },
                 ]}
             >
-                <InputNumber style={{ width: 340 }} addonBefore={prefixSelector} type="number" />
+                <InputNumber
+                    step={0}
+                    type="number"
+                    style={{ width: 340 }} addonBefore={prefixSelector}
+                />
             </Form.Item>
         </Col>
         <Col xs={24} lg={8}>
@@ -263,7 +269,7 @@ export const FormList = ({ formProps, type }: any) => {
                                     >
                                         <TextArea style={{ height: 150 }} placeholder="Description" />
                                     </Form.Item>
-                                    {(productList[name] && (productList[name] as any).description) && (<Form.Item
+                                    {(productList && productList[name] && (productList[name] as any).description) && (<Form.Item
                                         {...restField}
                                         name={[name, 'image']}
                                         rules={[
