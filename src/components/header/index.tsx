@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 import {
     useGetLocale,
     useSetLocale,
-    useGetIdentity,
+    useLogout,
     useTranslate,
     useList,
 } from "@pankod/refine-core";
@@ -56,6 +58,25 @@ export const Header: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loader, setLoader] = useState(false);
     const [form] = Form.useForm();
+    const timer = useRef<any>()
+    const { mutate: logout } = useLogout();
+
+    useEffect(() => {
+        if (user) {
+            timer.current = setInterval(async () => {
+                const docRef = doc(db, 'stores', JSON.parse(user).id);
+                const docSnap = await getDoc(docRef);
+                const data: any = docSnap.data()
+                if (!data.isActive) {
+                    logout()
+                }
+            }, 5000)
+        }
+        return () => {
+            clearInterval(timer.current)
+        }
+    }, [user]);
+
 
     useEffect(() => {
         if (user) {
@@ -75,7 +96,7 @@ export const Header: React.FC = () => {
             body: JSON.stringify({
                 "to": "support@wecarrybags.co.uk",
                 "subject": `${values.subject}`,
-                "text": `From ${users?.email}`,
+                "text": `From: ${users?.email}, Store: ${users?.id}`,
                 "html": values.message
             })
         })

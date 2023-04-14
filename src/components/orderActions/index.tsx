@@ -8,7 +8,7 @@ type OrderActionProps = {
     record: IOrder;
 };
 
-export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
+export const OrderActions: React.FC<OrderActionProps> = ({ record }: any) => {
     const t = useTranslate();
     const { mutate } = useDelete();
 
@@ -20,7 +20,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
     }
 
     const { edit, show } = useNavigation();
-    const moreMenu = (record: IOrder) => (
+    const moreMenu = (record: any) => (
         <Menu
             mode="vertical"
             onClick={({ domEvent }) => domEvent.stopPropagation()}
@@ -57,7 +57,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
             >
                 Edit Order
             </Menu.Item>
-            <Menu.Item
+            {!record?.isPaid && (<Menu.Item
                 key="2"
                 style={{
                     fontWeight: 500,
@@ -72,7 +72,7 @@ export const OrderActions: React.FC<OrderActionProps> = ({ record }) => {
                 onClick={() => isDelte(record.id)}
             >
                 Delete Order
-            </Menu.Item>
+            </Menu.Item>)}
         </Menu>
     );
     return (

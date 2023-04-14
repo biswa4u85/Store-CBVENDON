@@ -15,7 +15,7 @@ export const authProvider: AuthProvider = {
             const q = query(collection(db, "stores"), where("uid", "==", user.user.uid));
             const querySnapshot: any = await getDocs(q);
             if (querySnapshot?.docs?.length == 0) {
-                throw new Error("Invalid login credentials");
+                throw new Error("Your account has been suspended due to a violation of our policies. To reactivate your account, please contact our support team and provide additional information.");
             }
             return querySnapshot.forEach((doc: any) => {
                 let userData = doc.data()
@@ -25,12 +25,12 @@ export const authProvider: AuthProvider = {
                     localStorage.setItem(USERS, `${JSON.stringify(user.user)}`);
                     localStorage.setItem(USERS_DETAILS, `${JSON.stringify(userData)}`);
                 } else {
-                    throw new Error("Account Inactive");
+                    throw new Error("Your account has been suspended due to a violation of our policies. To reactivate your account, please contact our support team and provide additional information.");
                 }
             });
 
         } catch (error) {
-            throw new Error("Account Inactive");
+            throw new Error("Your account has been suspended due to a violation of our policies. To reactivate your account, please contact our support team and provide additional information.");
         }
     },
     register: async (values) => {
@@ -52,7 +52,7 @@ export const authProvider: AuthProvider = {
         } catch (error) {
             notification.error({
                 message: "Error",
-                description: `Account already exists with this email id`,
+                description: `This email has account with “CarryBags”, please try login.`,
             });
             return Promise.reject(error);
         }

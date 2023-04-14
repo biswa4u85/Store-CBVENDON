@@ -17,7 +17,8 @@ export const dataProvider: any = {
         }
         if (resource === 'orders') {
             params.isPaid = false
-            params.orderStatusArray = []
+            params.orderStatus = 'Order Received'
+            params.orderStatusArray = [{ children: 'Order Received', label: String(new Date()) }]
             params.user = params.user ? params.user : ''
         }
         params['createAt'] = String(new Date())
