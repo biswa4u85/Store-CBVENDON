@@ -156,7 +156,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                             render={(value) => {
                                 return <OrderStatus status={value} />;
                             }}
-                            sorter
+                            // sorter
                         />
                         <Table.Column
                             align="right"
@@ -164,7 +164,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                             dataIndex="servicePrice"
                             title={'Service Price'}
                             render={(value) => {
-                                return `${common.currency}${value}`
+                                return  value ?`${common.currency}${value}` : ''
                             }}
                         />
                         <Table.Column
@@ -217,7 +217,7 @@ export const OrderList: React.FC<IResourceComponentsProps> = () => {
                             render={(value) => (
                                 <DateField value={value} format="LL" />
                             )}
-                            sorter
+                            // sorter
                         />
                         <Table.Column<IOrder>
                             fixed="right"

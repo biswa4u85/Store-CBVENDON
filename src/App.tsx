@@ -18,7 +18,7 @@ import { AuthPage } from "./pages/auth";
 import { SignUp } from "./pages/auth/signUp";
 import { StoreEdit } from "./pages/stores";
 import { useTranslation } from "react-i18next";
-import { Header, Title } from "components";
+import { Header, Title, Error } from "components";
 
 import "@pankod/refine-antd/dist/reset.css";
 
@@ -89,7 +89,7 @@ const App: React.FC = () => {
                     },
                 ]}
                 notificationProvider={notificationProvider}
-                catchAll={<ErrorComponent />}
+                catchAll={<Error />}
             />
         </RefineKbarProvider>
     );

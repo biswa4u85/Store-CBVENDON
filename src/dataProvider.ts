@@ -131,16 +131,13 @@ export const dataProvider: any = {
         }
     },
     update: ({ resource, id, variables, metaData }: any) => {
-        if (resource === 'orders' && variables.orderStatusArray) {
-            let isExit = (variables.orderStatusArray).find((item: any) => item.children == variables.orderStatus)
-            if (isExit == undefined) {
-                variables.orderStatusArray = [...variables.orderStatusArray, { children: variables.orderStatus, label: String(new Date()) }]
-            }
-        }
         variables['updateAt'] = String(new Date())
         const docRef = doc(db, resource, id);
         updateDoc(docRef, variables)
             .then(docRef => {
+                if (resource == 'stores') {
+                    window.open('/orders', "_self");
+                }
                 return Promise.resolve();
             })
             .catch(error => {

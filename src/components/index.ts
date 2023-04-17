@@ -10,4 +10,5 @@ export * from "./venderTimes";
 export * from "./qrCodes";
 export * from "./dates";
 export * from "./loader";
+export * from "./error";
 export * from "./files/pImg";

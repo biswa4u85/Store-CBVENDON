@@ -2,6 +2,7 @@ import { IResourceComponentsProps } from "@pankod/refine-core";
 import {
     Edit,
     Form,
+    Button,
     useForm,
 } from "@pankod/refine-antd";
 
@@ -14,6 +15,9 @@ export const StoreEdit: React.FC<IResourceComponentsProps> = () => {
         <Edit
             isLoading={queryResult?.isFetching}
             saveButtonProps={saveButtonProps}
+            headerButtons={
+                <Button onClick={() => history.back()}>Back</Button>
+            }
         >
             <Form
                 {...formProps}

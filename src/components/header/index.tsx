@@ -97,7 +97,7 @@ export const Header: React.FC = () => {
                 "to": "support@wecarrybags.co.uk",
                 "subject": `${values.subject}`,
                 "text": `From: ${users?.email}, Store: ${users?.id}`,
-                "html": values.message
+                "html": `<p>From: ${users?.email}, Store: ${users?.id}</p> <p>${values.message}</p>`
             })
         })
             .then((response) => response.text())
