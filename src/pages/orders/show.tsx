@@ -54,8 +54,8 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                         body: JSON.stringify({
                             "to": users?.email,
                             "subject": "Order Details",
-                            "text": `Order PDF`,
-                            "html": `<img src=${pdf} />`
+                            "text": ``,
+                            "html": `<p><a href="${`https://store-cbvendon-git-main-biswa4u85.vercel.app/orders/show/${order.id}`}">Open Order</a></p><p><a href="${pdf}">Download PDF</a></p>`
                         })
                     })
                         .then(response => response.text())
