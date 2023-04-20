@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
     useShow,
     useOne,
@@ -45,28 +46,48 @@ export const OrderShow: React.FC<IResourceComponentsProps> = () => {
                 .from(html)
                 .outputPdf('datauristring')
                 .then((pdf: any) => {
-                    fetch('https://us-central1-cbuserapp.cloudfunctions.net/emailSend', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*'
-                        },
-                        body: JSON.stringify({
-                            "to": users?.email,
-                            "subject": "Order Details",
-                            "text": ``,
-                            "html": `<p><a href="${`https://store-cbvendon-git-main-biswa4u85.vercel.app/orders/show/${order.id}`}">Open Order</a></p><p><a href="${pdf}">Download PDF</a></p>`
-                        })
-                    })
-                        .then(response => response.text())
-                        .then(data => notification.success({
-                            message: "Success",
-                            description: data,
-                        }))
-                        .catch(error => notification.error({
+                    const base64EncodedData = pdf.split(";base64,").pop();
+                    const arrayBuffer = Uint8Array.from(atob(base64EncodedData), c => c.charCodeAt(0));
+                    const storage = getStorage();
+                    const storageRef = ref(storage);
+                    const filePath = `invoices/order_${order.id}.pdf`;
+                    const fileRef = ref(storageRef, filePath);
+                    uploadBytes(fileRef, arrayBuffer).then((snapshot) => {
+                        getDownloadURL(fileRef).then((url) => {
+                            fetch('https://us-central1-cbuserapp.cloudfunctions.net/emailSend', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin': '*'
+                                },
+                                body: JSON.stringify({
+                                    "to": users?.email,
+                                    "subject": "Order Details",
+                                    "text": ``,
+                                    "html": `<p><a href="${`https://store-cbvendon-git-main-biswa4u85.vercel.app/orders/show/${order.id}`}">Open Order</a></p><p><a href="${url}">Download PDF</a></p>`
+                                })
+                            })
+                                .then(response => response.text())
+                                .then(data => notification.success({
+                                    message: "Success",
+                                    description: data,
+                                }))
+                                .catch(error => notification.error({
+                                    message: "Error",
+                                    description: "Email Error",
+                                }));
+                        }).catch((error) => {
+                            notification.error({
+                                message: "Error",
+                                description: "PDF Generate error",
+                            })
+                        });
+                    }).catch((error) => {
+                        notification.error({
                             message: "Error",
-                            description: "Email Error",
-                        }));
+                            description: "PDF Generate error",
+                        })
+                    });
                 })
                 .catch((err: any) => notification.error({
                     message: "Error",
