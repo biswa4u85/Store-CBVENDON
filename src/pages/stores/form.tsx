@@ -228,19 +228,7 @@ export const FormList = ({ formProps, type }: any) => {
                 rules={[
                     {
                         required: true,
-                        message: 'Items are required!'
-                    },
-                    {
-                        validator: (rule, value, callback) => {
-                            if (value) {
-                                if (value.length > 5) {
-                                    callback("No more than 5 items");
-                                } else if (value.length <= 5) {
-                                    callback();
-                                }
-                            }
-                            return;
-                        }
+                        message: 'Products are required!'
                     }
                 ]}
             >

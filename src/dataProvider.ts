@@ -20,6 +20,7 @@ export const dataProvider: any = {
             params.orderStatus = 'Order Received'
             params.orderStatusArray = [{ children: 'Order Received', label: String(new Date()) }]
             params.user = params.user ? params.user : ''
+            params.employeeID = params.employeeID ? params.employeeID : ''
         }
         params['createAt'] = String(new Date())
         params['updateAt'] = String(new Date())
@@ -132,6 +133,9 @@ export const dataProvider: any = {
     },
     update: ({ resource, id, variables, metaData }: any) => {
         variables['updateAt'] = String(new Date())
+        if (resource == 'orders') {
+            variables.employeeID = variables.employeeID ? variables.employeeID : ''
+        }
         const docRef = doc(db, resource, id);
         updateDoc(docRef, variables)
             .then(docRef => {
