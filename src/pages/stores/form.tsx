@@ -16,6 +16,7 @@ import { Files, PImg, Address, VenderTimes } from 'components'
 import { IProduct } from "interfaces";
 import { useEffect, useState } from "react";
 import code from "./code";
+const handleGetValueFromEventNumber = (e: any) => Math.round(e)
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -116,11 +117,8 @@ export const FormList = ({ formProps, type }: any) => {
                         required: true,
                         message: 'Management Phone is required!'
                     },
-                    {
-                        pattern: /^[0-9]{10}$/,
-                        message: "Please Enter Up to 10 digits",
-                    },
                 ]}
+                getValueFromEvent={handleGetValueFromEventNumber}
             >
                 <InputNumber step="0" style={{ width: 340 }} addonBefore={prefixSelector} type="number" />
             </Form.Item>
@@ -175,12 +173,9 @@ export const FormList = ({ formProps, type }: any) => {
                     {
                         required: true,
                         message: 'Store Representative Phone is required!'
-                    },
-                    {
-                        pattern: /^[0-9]{10}$/,
-                        message: "Please Enter Up to 10 digits",
-                    },
+                    }
                 ]}
+                getValueFromEvent={handleGetValueFromEventNumber}
             >
                 <InputNumber
                     step={0}

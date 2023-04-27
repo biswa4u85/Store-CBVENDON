@@ -40,7 +40,7 @@ export const authProvider: AuthProvider = {
             addDoc(dbRef, { ...values, uid: user.user.uid, id: user.user.uid, type: 'vendor', isActive: false, createAt: String(new Date()), updateAt: String(new Date()) })
                 .then(docRef => {
                     notification.success({
-                        message: "Resistor",
+                        message: "",
                         description: "Congratulations! You have successfully registered store.",
                     });
                     history.back()
