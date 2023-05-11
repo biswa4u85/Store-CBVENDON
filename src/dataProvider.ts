@@ -28,7 +28,6 @@ export const dataProvider: any = {
         let q = query(collection(db, resource))
         const querySnapshot = await getDocs(q);
         const recordCount = querySnapshot.size;
-        params['uniqueId'] = recordCount + 1
         addDoc(dbRef, params)
             .then(docRef => {
                 return Promise.resolve();
