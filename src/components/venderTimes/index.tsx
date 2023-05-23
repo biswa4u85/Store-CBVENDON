@@ -27,10 +27,18 @@ export const VenderTimes: React.FC<VenderTimesProps> = ({ formProps, name }) => 
     useEffect(() => {
         if (formProps?.initialValues && formProps?.initialValues[name]) {
             if (typeof (formProps?.initialValues[name]) == 'object') {
-                setCheckedList(formProps.form.getFieldValue(name));
+                let values = formProps.form.getFieldValue(name)
+                if (values) {
+                    let newValues: any = {}
+                    for (let key in options) {
+                        newValues[key] = values[key] ? values[key] : options[key]
+                    }
+                    setCheckedList(newValues);
+                }
             }
         }
     }, [formProps.initialValues])
+
 
     const onChangeValue = (key: any, type: any, time?: any, timeString?: any) => {
         let tempCheckedList = JSON.parse(JSON.stringify(checkedList));
